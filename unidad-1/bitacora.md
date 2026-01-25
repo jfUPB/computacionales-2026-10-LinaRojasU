@@ -11,6 +11,7 @@
  > R// La ROM guarda las instrucciones que le vamos dando, es basicamente lo que queremos que el computador haga. La RAM guarda los datos del programa, los números con los que el programa va a trabajar, estos valores pueden cambiarse progresivamente de posición y de valor como nosotros queramos en cualquier parte del programa.
 
 
+
 ### Actividad 02
 #### Identifica una instrucción que use la ALU y explica qué hace.
  > R// En la posión 11 de la ROM: D=D-A 
@@ -37,5 +38,6 @@
 
 
 ## Bitácora de reflexión
+
 
 
