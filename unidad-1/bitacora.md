@@ -35,9 +35,48 @@
 
 ## Bitácora de aplicación 
 
+ ### Activuidad 4
+
+ ```
+@12
+M=0
+
+@i
+M=1
+
+(LOOP)
+
+@i
+D=M
+@6
+D=D-A
+@END
+D;JEQ
+
+@i
+D=M
+@12
+M=D+M
+
+@i 
+M=M+1
+
+@LOOP
+0;JMP
+
+@END
+(END)
+0;JMP
+
+```
+
+#### Resultado:
+
+<img width="1543" height="798" alt="image" src="https://github.com/user-attachments/assets/01ac8ab7-10b7-4133-b9d9-5e5024d028a5" />
 
 
 ## Bitácora de reflexión
+
 
 
 
