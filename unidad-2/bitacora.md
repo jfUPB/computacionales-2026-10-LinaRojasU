@@ -449,8 +449,7 @@ M=D        // R15 = address(RETURN_FROM_SWAP)
   0;JMP
 ```
 <img width="420" height="817" alt="image" src="https://github.com/user-attachments/assets/a6dcb725-cde2-4ae4-8a12-a15de0fc4f4b" />
-
-
+\n
 <img width="974" height="751" alt="image" src="https://github.com/user-attachments/assets/23a4df07-03f8-4632-a6f1-a33951c1621d" />
 
 
@@ -597,10 +596,11 @@ A=M
 ```
 
 <img width="427" height="822" alt="image" src="https://github.com/user-attachments/assets/e9a02ecb-5b6f-45c7-ad57-0a0438f6aa16" />
-
+\n
 <img width="972" height="824" alt="image" src="https://github.com/user-attachments/assets/677f9faf-f3fa-41cf-917c-f400ae66482c" />
 
 
 ## Bitácora de reflexión
+
 
 
