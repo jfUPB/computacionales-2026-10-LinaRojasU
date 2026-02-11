@@ -344,6 +344,263 @@ A=M
 ## Bitácora de aplicación 
 
 
+ #### Actividad 8
+ 
+ > ##### Problema 1:
+```
+#include <iostream>
+
+void swap(int* pa, int* pb){
+    int tmp = *pa;
+    *pa = *pb;
+    *pb = tmp;
+}
+
+int main()
+{
+    int a = 10;
+    int b = 20;
+    std::cout<<"a: " << a <<" b: "<< b<< std::endl;
+    swap(&a,&b);
+    std::cout<<"a: " << a <<" b: "<< b<< std::endl;
+    return 0;
+}
+```
+
+ > ##### Lenguaje ensamblador
+```
+// ----------------- Datos (variables) -----------------
+// Reservamos 'a' y 'b' en memoria (el ensamblador asignará direcciones
+// a partir de 16; aquí usaremos las direcciones 16 y 17 conceptualmente).
+// Para claridad uso las etiquetas simbólicas: a, b, etc.
+
+@10
+D=A
+@a
+M=D        // a = 10
+
+@20
+D=A
+@b
+M=D        // b = 20
+
+// ----------------- MAIN: preparar llamada a swap(&a, &b) -----------------
+
+// poner en R0 la dirección de a (por convención los argumentos van en R0, R1,...)
+@a
+D=A
+@R0
+M=D        // R0 = &a
+
+// poner en R1 la dirección de b
+@b
+D=A
+@R1
+M=D        // R1 = &b
+
+// guardar la dirección de retorno en R15 (direccion label RETURN_FROM_SWAP)
+@RETURN_FROM_SWAP
+D=A
+@R15
+M=D        // R15 = address(RETURN_FROM_SWAP)
+
+// saltar a la función swap
+@SWAP
+0;JMP
+
+// cuando la función termine, volveremos aquí (dirección puesta en R15)
+(RETURN_FROM_SWAP)
+
+// --- Aquí estaría la segunda std::cout en C++ (omitida) ---
+// Podemos leer a y b en la memoria para ver que se intercambiaron.
+
+// fin del programa: bucle infinito
+(END)
+  @END
+  0;JMP
+
+// ----------------- Función swap (usa los registros R0=pa, R1=pb) -----------------
+(SWAP)
+  // tmp = *pa
+  @R0
+  A=M      // A = R0 (la dirección almacenada en R0)
+  D=M      // D = *pa
+  @R13
+  M=D      // R13 = tmp
+
+  // *pa = *pb
+  @R1
+  A=M      // A = R1 (dirección apuntada por pb)
+  D=M      // D = *pb
+  @R0
+  A=M      // A = pa (direccion)
+  M=D      // *pa = *pb
+
+  // *pb = tmp
+  @R13
+  D=M      // D = tmp
+  @R1
+  A=M      // A = pb (direccion)
+  M=D      // *pb = tmp
+
+  // return: saltar a la dirección guardada en R15
+  @R15
+  A=M
+  0;JMP
+```
+<img width="420" height="817" alt="image" src="https://github.com/user-attachments/assets/a6dcb725-cde2-4ae4-8a12-a15de0fc4f4b" />
+
+
+<img width="974" height="751" alt="image" src="https://github.com/user-attachments/assets/23a4df07-03f8-4632-a6f1-a33951c1621d" />
+
+
+ > ##### Problema 2:
+```
+#include <iostream>
+
+int calSum(int* parr,int arrSize){
+    int sum = 0;
+    for(int i= 0; i < arrSize;i++){
+        sum = sum + *(parr+i);
+    }
+    return sum;
+}
+
+int main()
+{
+    int arr[] = {10,15,2,3,50};
+    int sum = calSum(arr,5);
+    std::cout<<"Sum: " << sum << std::endl;
+    return 0;
+}
+```
+
+ > ##### Lenguaje ensamblador
+```
+// =====================
+// Inicializar arreglo arr = {10,15,2,3,50}
+// arr empieza en RAM[16]
+// =====================
+@10
+D=A
+@16
+M=D
+
+@15
+D=A
+@17
+M=D
+
+@2
+D=A
+@18
+M=D
+
+@3
+D=A
+@19
+M=D
+
+@50
+D=A
+@20
+M=D
+
+// =====================
+// MAIN: llamar calSum(arr, 5)
+// =====================
+
+// R0 = &arr
+@16
+D=A
+@R0
+M=D
+
+// R1 = arrSize = 5
+@5
+D=A
+@R1
+M=D
+
+// Guardar dirección de retorno
+@RETURN
+D=A
+@R15
+M=D
+
+// Llamar función
+@CALSUM
+0;JMP
+
+(RETURN)
+// Aquí R0 tiene la suma final
+
+(END)
+@END
+0;JMP
+
+// =====================
+// FUNCIÓN calSum
+// R0 = parr
+// R1 = arrSize
+// =====================
+(CALSUM)
+
+// sum = 0
+@0
+D=A
+@R13
+M=D
+
+// i = 0
+@0
+D=A
+@R14
+M=D
+
+(LOOP)
+// if (i == arrSize) salir
+@R14
+D=M
+@R1
+D=D-M
+@FIN
+D;JEQ
+
+// sum = sum + *(parr + i)
+@R0
+D=M
+@R14
+A=D+M
+D=M
+@R13
+M=D+M
+
+// i++
+@R14
+M=M+1
+
+@LOOP
+0;JMP
+
+(FIN)
+// return sum
+@R13
+D=M
+@R0
+M=D
+
+// regresar a main
+@R15
+A=M
+0;JMP
+```
+
+<img width="427" height="822" alt="image" src="https://github.com/user-attachments/assets/e9a02ecb-5b6f-45c7-ad57-0a0438f6aa16" />
+
+<img width="972" height="824" alt="image" src="https://github.com/user-attachments/assets/677f9faf-f3fa-41cf-917c-f400ae66482c" />
+
 
 ## Bitácora de reflexión
+
 
