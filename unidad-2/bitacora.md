@@ -448,8 +448,14 @@ M=D        // R15 = address(RETURN_FROM_SWAP)
   A=M
   0;JMP
 ```
-<img width="420" height="817" alt="image" src="https://github.com/user-attachments/assets/a6dcb725-cde2-4ae4-8a12-a15de0fc4f4b" /> <br/>      
-<img width="974" height="751" alt="image" src="https://github.com/user-attachments/assets/23a4df07-03f8-4632-a6f1-a33951c1621d" />
+
+<img width="1231" height="861" alt="image" src="https://github.com/user-attachments/assets/35a67a51-2df2-4dd8-ac4b-50d9b05bc159" />
+
+ > En esta captura el programa ya inicializó las variables a y b, y preparó los argumentos para la función swap. En R0 se encuentra la dirección de a y en R1 la dirección de b. Además, la dirección de retorno fue guardada en R15. El contador de programa se encuentra en la instrucción @22, lo que indica que el siguiente paso será saltar a la subrutina SWAP.
+
+##### Resultado final: 
+
+<img width="1238" height="827" alt="image" src="https://github.com/user-attachments/assets/96312aca-5c94-4619-b666-534752b75400" />
 
 
  > ##### Problema 2:
@@ -594,11 +600,16 @@ A=M
 0;JMP
 ```
 
-<img width="427" height="822" alt="image" src="https://github.com/user-attachments/assets/e9a02ecb-5b6f-45c7-ad57-0a0438f6aa16" />  <br/>      
-<img width="972" height="824" alt="image" src="https://github.com/user-attachments/assets/677f9faf-f3fa-41cf-917c-f400ae66482c" />
+<img width="1231" height="860" alt="image" src="https://github.com/user-attachments/assets/92a29802-e9f1-4740-9fa4-3da31594ae9e" />
+
+ > En este punto del programa, el arreglo ya fue inicializado completamente en memoria y los parámetros para la función calSum ya fueron colocados en los registros correspondientes. El contador de programa indica que el salto a la función ya ocurrió o está por ocurrir, por lo que el siguiente paso será inicializar las variables internas de la función (sum e i) y comenzar el ciclo que recorre el arreglo.
+
+##### Resultado final: 
+<img width="1238" height="833" alt="image" src="https://github.com/user-attachments/assets/5c03e712-17ea-44a9-ad9d-aa78dfd65054" />
 
 
 ## Bitácora de reflexión
+
 
 
 
