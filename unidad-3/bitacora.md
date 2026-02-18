@@ -68,7 +68,7 @@ int main() {
 <img width="1089" height="683" alt="image" src="https://github.com/user-attachments/assets/b075467e-447d-4166-a654-19fa6fc57685" />
 
 ##### Swap Por Referencia:
-<img width="1178" height="723" alt="image" src="https://github.com/user-attachments/assets/b7a65bba-1602-4dc9-a1f0-6ec6dfa5e15e" />
+<img width="1181" height="607" alt="image" src="https://github.com/user-attachments/assets/60135ce6-39a1-41bc-925f-982afc9a960c" />
 
 ##### Swap Por Puntero:
 <img width="1254" height="623" alt="image" src="https://github.com/user-attachments/assets/1bdfbc41-45ff-42e4-843e-5aba9394aefb" />
@@ -95,3 +95,4 @@ int main() {
 
 
 ## Bitácora de reflexión
+
