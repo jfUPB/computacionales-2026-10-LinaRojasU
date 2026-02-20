@@ -73,11 +73,31 @@ int main() {
 ##### Swap Por Puntero:
 <img width="1254" height="623" alt="image" src="https://github.com/user-attachments/assets/1bdfbc41-45ff-42e4-843e-5aba9394aefb" />
 
+
  ### Actividad 3 
+#### Segmento de código:
+ > Son todas las instrucciones y funciones que hemos puesto en el codigo que estan fuera del Main.
+
+#### Variables globales y estáticas:
+ > Son las variables que instanciamos en el Main y se pueden usar en todo el resto del codigo.
+
+#### Heap:
+ > Es lo que se guarda en memoria pero solo son las variables u objetos creados con "new"
+
+#### Stack:
+ > Son las variables locales que se crean en cada función y cuando salimos de cada función estas variables se eliminan.
+
 
  ### Actividad 4 
 
  ### Actividad 5 
+
+#### Explica qué ocurre al copiar un objeto en C++ y en C#. ¿Qué diferencias encuentras?
+ > En C# no se puede copiar los objetos igual que en C++, ya que en C# original y copia continene la misma direccion en el Heap o sea que en la memoria son el mismo objeto.
+
+#### ¿Qué es copia en C++ y en C#? ¿Es una copia independiente de original?
+ > Una copia en C++ es copiar y pegar los contenidos del objeto original a la copia, o sea que creamos dos objetos diferentes, en C# la copia no es independiente de original por que solo hemos creado un objeto y la copia se convierte en ese mismo objeto.
+
 
  ### Actividad 6 
 
@@ -95,4 +115,5 @@ int main() {
 
 
 ## Bitácora de reflexión
+
 
