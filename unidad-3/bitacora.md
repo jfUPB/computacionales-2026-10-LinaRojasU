@@ -342,18 +342,27 @@ public:
 
 int Enemigo::totalEnemigos = 0;
 ```
+> No hay new[] ni delete[] -> se elimina la fuga.
+> totalEnemigos incrementa cuando se construye un objeto (incluyendo copias y moves) y decrementa en el destructor; después de crear y destruir en cada crearEscuadron() el total final (al terminar el programa) será 0, porque se creó y luego fueron destruidos todos los objetos. Si se quiere que totalEnemigos mida en un momento concreto el número actual de enemigos vivos, se puede imprimir desde dentro del bucle o en puntos de ejecución concretos.
 
-
+ #### ¿Por  que se arreglan?
+  > std::array<int,3>: los datos armas se almacenan dentro del objeto; no hay heap dinámico, por tanto no hay fugas ni doble frees por manejar mal punteros.
+  > Definir copy/move ctors y destructor: garantiza que totalEnemigos refleje la creación y destrucción real de instancias, evitando inconsistencias.
+  > Evitar new[] directo sigue la regla de oro: preferir RAII y contenedores STL para seguridad.
 
  ### 3. reflexión metacognitiva
   #### De todos los conceptos que exploraste en esta unidad (stack vs heap, paso de parámetros, ciclo de vida de objetos, etc.), ¿Cuál consideras que es el más crítico para evitar errores en programas reales? ¿Por qué?
-  >
+  > Gestión de la memoria dinámica (heap): comprender quién es dueño de la memoria, cuándo se libera y cómo evitar fugas o doble frees es lo más crítico. Los crashes reales, leaks y bugs de seguridad provienen principalmente de errores de heap.
 
   #### ¿Cómo cambió tu comprensión sobre lo que realmente es un “objeto” después de comparar C++ con C#? ¿Qué implicaciones prácticas tiene esta diferencia?
-  >
+  > En C++, un objeto puede existir en cualquier lugar de memoria (stack, heap, dentro de otros objetos) y su layout es explícito; tú controlas la duración y ownership.
+
+En C#, un objeto creado con new vive en el managed heap y el programador trata con referencias; el GC gestiona la liberación de memoria automáticamente.
+Implicaciones prácticas: en C++ eres responsable de la corrección y performance (y de evitar leaks), mientras que en C# el runtime quita parte de esa carga, pero tienes que lidiar con otros temas (generaciones de GC, finalizers, determinismo).
 
   #### Si tuvieras que explicar a un compañero de semestres anteriores por qué es importante entender la gestión de memoria en programación, ¿Qué le dirías en máximo 3 oraciones?
-  >
+  > Entender gestión de memoria evita crashes y fugas: saber cuándo y quién libera memoria (stack vs heap) es crucial para escribir código robusto. Usar RAII y contenedores de la STL reduce errores humanos; cuando no se usan, los bugs de memoria son las fallas más frecuentes y costosas. En resumen: controla la propiedad de los recursos, no solo su uso.
+
 
 
 
