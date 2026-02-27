@@ -167,12 +167,19 @@ int main() {
 
  ### 2. Usa el depurador:
 #### Error A
+<img width="1862" height="531" alt="image" src="https://github.com/user-attachments/assets/1cf8f826-4f68-47c6-a9de-a08cf1672308" />
+ > Se puede envidenciar una fuga en la memoria.
 
 #### Error B
-
+<img width="1483" height="853" alt="image" src="https://github.com/user-attachments/assets/76480a8e-f69c-4a6e-bd97-f581a3a84a43" /> 
+ > se realiza una copia superficial del objeto.
+Esto significa que el puntero estadisticas se copia tal cual, no el contenido que apunta.
 
  ### 3. Induce los fallos:
 #### Error A
+<img width="1893" height="866" alt="image" src="https://github.com/user-attachments/assets/7d46e1ce-fe7b-47e1-8194-bead52b34c65" />
+
+<img width="1869" height="608" alt="image" src="https://github.com/user-attachments/assets/93074974-0b32-421f-b6f0-de4f8ef5f8e8" />
 
 #### Error B
 
@@ -238,6 +245,7 @@ El copy-constructor por defecto para ```std::array``` realiza una copia de los e
 > Semántica clara: Las modificaciones en la copia no afectan al original, lo que es lo esperado en la mayoría de los casos.
 
 ## Bitácora de reflexión
+
 
 
 
