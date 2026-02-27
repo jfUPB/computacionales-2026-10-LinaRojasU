@@ -244,23 +244,45 @@ El copy-constructor por defecto para ```std::array``` realiza una copia de los e
 
  ### 1. recuperación de conocimiento (Retrieval Practice)
   #### Explica con tus propias palabras qué es el stack y qué es el heap en C++.
-  >
+  > Stack: es la región de memoria gestionada cuando entras y sales de funciones. Allí se alojan variables locales y marcos de pila (call frames). La asignación y liberación es automática (LIFO). Es rápida pero tiene tamaño limitado.
+  > Heap: es la región de memoria dinámica gestionada manualmente por el programador. Se usa para datos cuyo tiempo de vida no coincide con un scope local. Se asigna con new/malloc y se libera con delete/free (o gestionada por contenedores RAII). Errores en heap producen fugas, punteros colgantes o corrupción.
 
   #### Describe las tres formas de pasar parámetros a una función en C++ (valor, referencia y puntero). Para cada una, explica qué sucede en memoria y cuándo usarías cada método.
-  >
+  > Por valor (T a): la función recibe una copia del argumento. En memoria se crea un nuevo objeto (normalmente en el stack del callee) que contiene los mismos datos; modificar ese parámetro no afecta al original. Se usa cuando quieres proteger el original o cuando el costo de copiar es aceptable (tipos pequeños o que implementan copy barato).
+
+  > Por referencia (T& a): la función recibe un alias al objeto original; no hay copia de los datos y las modificaciones afectan al original. En memoria no hay duplicación del objeto, sólo una referencia (internamente suele tratarse como puntero, pero la sintaxis es transparente). Útil cuando quieres modificar el original o evitar copias costosas.
+
+  > Por puntero (T* a): la función recibe una dirección; debes desreferenciar para acceder. Como la referencia, permite modificar el objeto original; además puede ser nula para indicar “sin objeto”. Es útil cuando la semántica de puntero es apropiada o cuando trabajas con arrays/datos dinámicos.
 
   #### ¿Qué diferencia hay entre una variable local, una variable global y una variable local estática? ¿En qué segmento del mapa de memoria se almacena cada una?
-  >
+  > Variable local: declarada dentro de una función; vive en el stack (duración automática) y se destruye al salir del scope.
+
+  > Variable global: declarada fuera de funciones; vive en la zona de datos ( .data o .bss ), existe durante toda la ejecución.
+
+  > Variable local estática (static dentro de función): su alcance es local (solo visible en la función) pero su duración es estática: vive en la región de datos y persiste durante toda la ejecución. Se inicializa una vez.
 
   #### Explica qué es un objeto en C++ desde la perspectiva de memoria. ¿Dónde se almacenan los miembros de instancia y dónde los miembros estáticos?
-  >
+  > Un objeto es una región contigua de memoria que contiene sus miembros de instancia (datos miembros) y, si corresponde, información auxiliar (por ejemplo, puntero vtable en clases polimórficas).
+
+  > Miembros de instancia (no estáticos) se almacenan dentro de la memoria del objeto: si el objeto está en stack, los miembros están en stack; si el objeto está en heap, los miembros están en heap.
+
+  > Miembros estáticos pertenecen a la clase en sí y se almacenan en la zona de datos (una única copia compartida por todas las instancias).
 
  ### 2. transferencia y análisis de situación nueva
   #### Análisis de problemas: identifica al menos dos problemas serios en este código relacionados con el manejo de memoria. Explica por qué cada uno es problemático.
-  >
+  > Fuga de memoria (memory leak)
+  > Qué: armas = new int[3]; asigna heap pero no hay delete[] en destructor.
+  > Por qué es problemático: cada Enemigo creado deja memoria sin liberar. En un juego que crea/descarta enemigos esto acumula RAM y termina en out-of-memory o degradación de rendimiento.
+
+  > Conteo incorrecto / semántica de copia (problema con totalEnemigos y ausencia de destructor)
+  > Qué: totalEnemigos se incrementa en el constructor pero nunca se decrementa, por lo que refleja el número total de construcciones en toda la ejecución, no el número actual de instancias vivas. Además, si se copian objetos (copy constructor implícito), ese copy no actualiza totalEnemigos correctamente (ni el destructor lo corrige por no existir).
+  > Por qué es problemático: la variable estática totalEnemigos quedará acumulada e inexacta; además, ausencia de destructor + uso de new produce leak y posibles crashes si se intenta añadir delete[] ingenuamente sin manejar copias.
+
+  > (Cabe mencionar un tercer problema: semántica de copia superficial si se copiara: armas es puntero y la copia por defecto copiaría la dirección, generando aliasing y potencial double-delete si se implementa destructor sin implementar la lógica de copia.)
 
   #### Predicción de comportamiento: ¿Qué valor mostrará totalEnemigos después de ejecutar el programa? ¿Por qué ocurre esto?
-  >
+  > En el código tal cual: crearEscuadron() crea 5 Enemigo (cada iteración crea soldado y al salir del scope el destructor no existe que decrementara), y se llama dos veces → 5 + 5 = 10.
+Explicación: cada construcción incrementa totalEnemigos++, pero nunca se decrementa, por lo que total cuenta todas las construcciones acumuladas.
 
   #### Propuesta de solución: escribe una versión corregida de la clase Enemigo que solucione los problemas identificados. Explica brevemente cada cambio que hiciste.
   >
@@ -274,6 +296,7 @@ El copy-constructor por defecto para ```std::array``` realiza una copia de los e
 
   #### Si tuvieras que explicar a un compañero de semestres anteriores por qué es importante entender la gestión de memoria en programación, ¿Qué le dirías en máximo 3 oraciones?
   >
+
 
 
 
