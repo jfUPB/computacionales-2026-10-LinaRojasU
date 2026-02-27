@@ -244,41 +244,39 @@ El copy-constructor por defecto para ```std::array``` realiza una copia de los e
 
  ### 1. recuperación de conocimiento (Retrieval Practice)
   #### Explica con tus propias palabras qué es el stack y qué es el heap en C++.
-  > Stack: es la región de memoria gestionada cuando entras y sales de funciones. Allí se alojan variables locales y marcos de pila (call frames). La asignación y liberación es automática (LIFO). Es rápida pero tiene tamaño limitado.
-  > Heap: es la región de memoria dinámica gestionada manualmente por el programador. Se usa para datos cuyo tiempo de vida no coincide con un scope local. Se asigna con new/malloc y se libera con delete/free (o gestionada por contenedores RAII). Errores en heap producen fugas, punteros colgantes o corrupción.
+  > Stack: es la región de memoria gestionada cuando entras y sales de funciones. Allí se alojan variables locales. Esta es rápida pero tiene tamaño limitado.
+  > Heap: es la región de memoria dinámica gestionada manualmente por el programador. Se usa para datos cuyo tiempo de vida no coincide con un scope local. Se asigna con new/malloc y se libera con delete/free. Errores en heap producen fugas o corrupción.
 
   #### Describe las tres formas de pasar parámetros a una función en C++ (valor, referencia y puntero). Para cada una, explica qué sucede en memoria y cuándo usarías cada método.
-  > Por valor (T a): la función recibe una copia del argumento. En memoria se crea un nuevo objeto (normalmente en el stack del callee) que contiene los mismos datos; modificar ese parámetro no afecta al original. Se usa cuando quieres proteger el original o cuando el costo de copiar es aceptable (tipos pequeños o que implementan copy barato).
+  > Por valor (T a): la función recibe una copia del argumento. En memoria se crea un nuevo objeto que contiene los mismos datos; modificar ese parámetro no afecta al original. Se usa cuando quieres proteger el original o cuando el costo de copiar es aceptable (tipos pequeños o que implementan copy barato).
 
-  > Por referencia (T& a): la función recibe un alias al objeto original; no hay copia de los datos y las modificaciones afectan al original. En memoria no hay duplicación del objeto, sólo una referencia (internamente suele tratarse como puntero, pero la sintaxis es transparente). Útil cuando quieres modificar el original o evitar copias costosas.
+  > Por referencia (T& a): la función recibe un alias al objeto original; no hay copia de los datos y las modificaciones afectan al original. En memoria no hay duplicación del objeto, sólo una referencia (internamente suele tratarse como puntero, pero la sintaxis es transparente). Útil cuando se quiere modificar el original o evitar copias costosas.
 
-  > Por puntero (T* a): la función recibe una dirección; debes desreferenciar para acceder. Como la referencia, permite modificar el objeto original; además puede ser nula para indicar “sin objeto”. Es útil cuando la semántica de puntero es apropiada o cuando trabajas con arrays/datos dinámicos.
+  > Por puntero (T* a): la función recibe una dirección; debes desreferenciar para acceder. Como la referencia, permite modificar el objeto original; además puede ser nula para indicar “sin objeto”. Es útil cuando la semántica de puntero es apropiada o cuando se trabajan con arrays/datos dinámicos.
 
   #### ¿Qué diferencia hay entre una variable local, una variable global y una variable local estática? ¿En qué segmento del mapa de memoria se almacena cada una?
   > Variable local: declarada dentro de una función; vive en el stack (duración automática) y se destruye al salir del scope.
 
-  > Variable global: declarada fuera de funciones; vive en la zona de datos ( .data o .bss ), existe durante toda la ejecución.
+  > Variable global: declarada fuera de funciones; vive en la zona de datos, existe durante toda la ejecución.
 
   > Variable local estática (static dentro de función): su alcance es local (solo visible en la función) pero su duración es estática: vive en la región de datos y persiste durante toda la ejecución. Se inicializa una vez.
 
   #### Explica qué es un objeto en C++ desde la perspectiva de memoria. ¿Dónde se almacenan los miembros de instancia y dónde los miembros estáticos?
   > Un objeto es una región contigua de memoria que contiene sus miembros de instancia (datos miembros) y, si corresponde, información auxiliar (por ejemplo, puntero vtable en clases polimórficas).
 
-  > Miembros de instancia (no estáticos) se almacenan dentro de la memoria del objeto: si el objeto está en stack, los miembros están en stack; si el objeto está en heap, los miembros están en heap.
+  > Miembros de instancia se almacenan dentro de la memoria del objeto: si el objeto está en stack, los miembros están en stack; si el objeto está en heap, los miembros están en heap.
 
   > Miembros estáticos pertenecen a la clase en sí y se almacenan en la zona de datos (una única copia compartida por todas las instancias).
 
  ### 2. transferencia y análisis de situación nueva
   #### Análisis de problemas: identifica al menos dos problemas serios en este código relacionados con el manejo de memoria. Explica por qué cada uno es problemático.
   > Fuga de memoria (memory leak)
-  > Qué: armas = new int[3]; asigna heap pero no hay delete[] en destructor.
-  > Por qué es problemático: cada Enemigo creado deja memoria sin liberar. En un juego que crea/descarta enemigos esto acumula RAM y termina en out-of-memory o degradación de rendimiento.
+  > Qué: se arma = new int[3]; asigna heap pero no hay delete[] en destructor.
+  > Por qué es problemático: cada Enemigo creado deja memoria sin liberar. En un juego que crea/descarta enemigos esto acumula RAM y termina en degradación de rendimiento.
 
   > Conteo incorrecto / semántica de copia (problema con totalEnemigos y ausencia de destructor)
   > Qué: totalEnemigos se incrementa en el constructor pero nunca se decrementa, por lo que refleja el número total de construcciones en toda la ejecución, no el número actual de instancias vivas. Además, si se copian objetos (copy constructor implícito), ese copy no actualiza totalEnemigos correctamente (ni el destructor lo corrige por no existir).
   > Por qué es problemático: la variable estática totalEnemigos quedará acumulada e inexacta; además, ausencia de destructor + uso de new produce leak y posibles crashes si se intenta añadir delete[] ingenuamente sin manejar copias.
-
-  > (Cabe mencionar un tercer problema: semántica de copia superficial si se copiara: armas es puntero y la copia por defecto copiaría la dirección, generando aliasing y potencial double-delete si se implementa destructor sin implementar la lógica de copia.)
 
   #### Predicción de comportamiento: ¿Qué valor mostrará totalEnemigos después de ejecutar el programa? ¿Por qué ocurre esto?
   > En el código tal cual: crearEscuadron() crea 5 Enemigo (cada iteración crea soldado y al salir del scope el destructor no existe que decrementara), y se llama dos veces → 5 + 5 = 10.
@@ -342,29 +340,22 @@ public:
 
 int Enemigo::totalEnemigos = 0;
 ```
-> No hay new[] ni delete[] -> se elimina la fuga.
+> No hay new[] ni delete[] por lo que se elimina la fuga.
 > totalEnemigos incrementa cuando se construye un objeto (incluyendo copias y moves) y decrementa en el destructor; después de crear y destruir en cada crearEscuadron() el total final (al terminar el programa) será 0, porque se creó y luego fueron destruidos todos los objetos. Si se quiere que totalEnemigos mida en un momento concreto el número actual de enemigos vivos, se puede imprimir desde dentro del bucle o en puntos de ejecución concretos.
 
  #### ¿Por  que se arreglan?
   > std::array<int,3>: los datos armas se almacenan dentro del objeto; no hay heap dinámico, por tanto no hay fugas ni doble frees por manejar mal punteros.
   > Definir copy/move ctors y destructor: garantiza que totalEnemigos refleje la creación y destrucción real de instancias, evitando inconsistencias.
-  > Evitar new[] directo sigue la regla de oro: preferir RAII y contenedores STL para seguridad.
 
  ### 3. reflexión metacognitiva
   #### De todos los conceptos que exploraste en esta unidad (stack vs heap, paso de parámetros, ciclo de vida de objetos, etc.), ¿Cuál consideras que es el más crítico para evitar errores en programas reales? ¿Por qué?
-  > Gestión de la memoria dinámica (heap): comprender quién es dueño de la memoria, cuándo se libera y cómo evitar fugas o doble frees es lo más crítico. Los crashes reales, leaks y bugs de seguridad provienen principalmente de errores de heap.
+  > Gestión de la memoria dinámica (heap): comprender quién es dueño de la memoria, cuándo se libera y cómo evitar fugas o doble frees es lo más crítico. Los leaks y bugs de seguridad provienen principalmente de errores de heap.
 
   #### ¿Cómo cambió tu comprensión sobre lo que realmente es un “objeto” después de comparar C++ con C#? ¿Qué implicaciones prácticas tiene esta diferencia?
   > En C++, un objeto puede existir en cualquier lugar de memoria (stack, heap, dentro de otros objetos) y su layout es explícito; tú controlas la duración y ownership.
-
-En C#, un objeto creado con new vive en el managed heap y el programador trata con referencias; el GC gestiona la liberación de memoria automáticamente.
+  > En C#, un objeto creado con new vive en el managed heap y el programador trata con referencias; el GC gestiona la liberación de memoria automáticamente.
 Implicaciones prácticas: en C++ eres responsable de la corrección y performance (y de evitar leaks), mientras que en C# el runtime quita parte de esa carga, pero tienes que lidiar con otros temas (generaciones de GC, finalizers, determinismo).
 
   #### Si tuvieras que explicar a un compañero de semestres anteriores por qué es importante entender la gestión de memoria en programación, ¿Qué le dirías en máximo 3 oraciones?
   > Entender gestión de memoria evita crashes y fugas: saber cuándo y quién libera memoria (stack vs heap) es crucial para escribir código robusto. Usar RAII y contenedores de la STL reduce errores humanos; cuando no se usan, los bugs de memoria son las fallas más frecuentes y costosas. En resumen: controla la propiedad de los recursos, no solo su uso.
-
-
-
-
-
 
