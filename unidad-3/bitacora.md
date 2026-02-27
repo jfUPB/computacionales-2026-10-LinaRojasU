@@ -286,6 +286,64 @@ Explicación: cada construcción incrementa totalEnemigos++, pero nunca se decre
 
   #### Propuesta de solución: escribe una versión corregida de la clase Enemigo que solucione los problemas identificados. Explica brevemente cada cambio que hiciste.
   >
+```
+#include <iostream>
+#include <array>
+
+class Enemigo {
+public:
+    static int totalEnemigos;
+    int vida;
+    std::array<int,3> armas; // vida, ataque, defensa volumen fijo
+
+    // Constructor principal
+    Enemigo(int v) : vida(v), armas{10,15,20} {
+        ++totalEnemigos;
+    }
+
+    // Copy constructor: copiar arma/vida y contar como nueva instancia
+    Enemigo(const Enemigo& other) : vida(other.vida), armas(other.armas) {
+        ++totalEnemigos;
+    }
+
+    // Move constructor: también representa una nueva instancia
+    Enemigo(Enemigo&& other) noexcept
+      : vida(other.vida), armas(std::move(other.armas))
+    {
+        ++totalEnemigos;
+        other.vida = 0; // opcional, dejar en estado válido
+    }
+
+    // Copy assignment: no cambia el conteo (no crea nueva instancia)
+    Enemigo& operator=(const Enemigo& other) {
+        if (this != &other) {
+            vida = other.vida;
+            armas = other.armas;
+            // totalEnemigos unchanged because no new object created
+        }
+        return *this;
+    }
+
+    // Move assignment
+    Enemigo& operator=(Enemigo&& other) noexcept {
+        if (this != &other) {
+            vida = other.vida;
+            armas = std::move(other.armas);
+            other.vida = 0;
+        }
+        return *this;
+    }
+
+    // Destructor: decrementar el contador
+    ~Enemigo() {
+        --totalEnemigos;
+    }
+};
+
+int Enemigo::totalEnemigos = 0;
+```
+
+
 
  ### 3. reflexión metacognitiva
   #### De todos los conceptos que exploraste en esta unidad (stack vs heap, paso de parámetros, ciclo de vida de objetos, etc.), ¿Cuál consideras que es el más crítico para evitar errores en programas reales? ¿Por qué?
@@ -296,6 +354,7 @@ Explicación: cada construcción incrementa totalEnemigos++, pero nunca se decre
 
   #### Si tuvieras que explicar a un compañero de semestres anteriores por qué es importante entender la gestión de memoria en programación, ¿Qué le dirías en máximo 3 oraciones?
   >
+
 
 
 
