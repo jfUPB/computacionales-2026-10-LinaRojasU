@@ -128,18 +128,6 @@ int main() {
 #### ¿Qué es copia en C++ y en C#? ¿Es una copia independiente de original?
  > Una copia en C++ es copiar y pegar los contenidos del objeto original a la copia, o sea que creamos dos objetos diferentes, en C# la copia no es independiente de original por que solo hemos creado un objeto y la copia se convierte en ese mismo objeto.
 
- ### Actividad integradora de investigación
-
- ### Actividad 6 
-
- ### Actividad 7 
- 
- ### Actividad 8 
-
- ### Actividad 9 
-
- ### Actividad 10 
-
 
 ## Bitácora de aplicación 
 
@@ -180,9 +168,17 @@ Esto significa que el puntero estadisticas se copia tal cual, no el contenido qu
 <img width="1893" height="866" alt="image" src="https://github.com/user-attachments/assets/7d46e1ce-fe7b-47e1-8194-bead52b34c65" />
 
 <img width="1869" height="608" alt="image" src="https://github.com/user-attachments/assets/93074974-0b32-421f-b6f0-de4f8ef5f8e8" />
+ > En cada iteración se reserva memoria dinámica en el heap mediante new int[3].
+Al finalizar la función simularEncuentro(), los objetos locales se destruyen, pero el bloque de memoria del heap permanece sin liberar debido a la ausencia de un destructor con delete[].
+Esto produce una fuga de memoria acumulativa, evidenciada por el incremento progresivo del uso de RAM en el depurador.
 
 #### Error B
+<img width="945" height="983" alt="image" src="https://github.com/user-attachments/assets/df460b33-a2bf-4d46-9e1f-35dcde69ad59" />
 
+<img width="1327" height="849" alt="image" src="https://github.com/user-attachments/assets/d814f1e7-92a4-4cc4-86a4-b817f7da2ab9" />
+ > Al copiar el objeto Personaje, el compilador realiza una copia superficial del puntero estadisticas.
+Como resultado, ambos objetos apuntan al mismo bloque del heap.
+Al finalizar la función, ambos destructores intentan liberar la misma dirección de memoria, produciendo doble liberación, corrupción del heap y fallo de ejecución.
 
  ### 4. Solución y refactorización (síntesis y creación):
 ```
@@ -240,12 +236,44 @@ int main() {
 > Copia segura por defecto (semántica de valor):
 El copy-constructor por defecto para ```std::array``` realiza una copia de los elementos. Al hacer ```Personaje copiaHeroe = heroe```;, ```estadisticas``` se copian (cada objeto obtiene su copia de los 3 ints). No hay aliasing, no hay doble free ni efectos colaterales.
 
-> Sin destructor manual → menos posibilidades de error: no hay que escribir delete ni implementar la Regla de Tres. std::string y std::array manejan sus propios recursos.
+> Sin destructor manual hace que hayan menos posibilidades de error: no hay que escribir delete ni implementar la Regla de Tres. std::string y std::array manejan sus propios recursos.
 
-> Semántica clara: Las modificaciones en la copia no afectan al original, lo que es lo esperado en la mayoría de los casos.
+> Semántica clara ya que las modificaciones en la copia no afectan al original, lo que es lo esperado en la mayoría de los casos.
 
 ## Bitácora de reflexión
 
+ ### 1. recuperación de conocimiento (Retrieval Practice)
+  #### Explica con tus propias palabras qué es el stack y qué es el heap en C++.
+  >
+
+  #### Describe las tres formas de pasar parámetros a una función en C++ (valor, referencia y puntero). Para cada una, explica qué sucede en memoria y cuándo usarías cada método.
+  >
+
+  #### ¿Qué diferencia hay entre una variable local, una variable global y una variable local estática? ¿En qué segmento del mapa de memoria se almacena cada una?
+  >
+
+  #### Explica qué es un objeto en C++ desde la perspectiva de memoria. ¿Dónde se almacenan los miembros de instancia y dónde los miembros estáticos?
+  >
+
+ ### 2. transferencia y análisis de situación nueva
+  #### Análisis de problemas: identifica al menos dos problemas serios en este código relacionados con el manejo de memoria. Explica por qué cada uno es problemático.
+  >
+
+  #### Predicción de comportamiento: ¿Qué valor mostrará totalEnemigos después de ejecutar el programa? ¿Por qué ocurre esto?
+  >
+
+  #### Propuesta de solución: escribe una versión corregida de la clase Enemigo que solucione los problemas identificados. Explica brevemente cada cambio que hiciste.
+  >
+
+ ### 3. reflexión metacognitiva
+  #### De todos los conceptos que exploraste en esta unidad (stack vs heap, paso de parámetros, ciclo de vida de objetos, etc.), ¿Cuál consideras que es el más crítico para evitar errores en programas reales? ¿Por qué?
+  >
+
+  #### ¿Cómo cambió tu comprensión sobre lo que realmente es un “objeto” después de comparar C++ con C#? ¿Qué implicaciones prácticas tiene esta diferencia?
+  >
+
+  #### Si tuvieras que explicar a un compañero de semestres anteriores por qué es importante entender la gestión de memoria en programación, ¿Qué le dirías en máximo 3 oraciones?
+  >
 
 
 
