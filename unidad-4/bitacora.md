@@ -29,25 +29,40 @@ se agregan nodos a la serpiente, aL apretar "r" puede ir eliminando nodo por nod
 
 ### Actividad 3
 
- #### Explicación: ¿Qué variables y valores específicos se están observando en la imagen?
- #### Justificación: ¿Por qué esto demuestra que la estructura o la función cumple con lo solicitado en el enunciado?
- 
  #### Evidencia 1: inserción del primer nodo en una cola vacía (enqueue)
+ <img width="1902" height="883" alt="Captura de pantalla 2026-03-13 032410" src="https://github.com/user-attachments/assets/b71f9204-7c81-4889-ad0f-2f86d7276be9" />
+ #### Explicación: En la captura se observa que la cola estaba vacía y se insertó el primer nodo. Las variables front y rear apuntan a la misma dirección de memoria, lo que indica que el primer nodo es simultáneamente el inicio y el final de la cola. Además despues (aunque no se ve en la captura), el tamaño (size) se incrementa a 1.
+ #### Justificación: Esto demuestra que la estructura maneja correctamente la inserción inicial en una cola vacía, estableciendo adecuadamente los punteros front y rear.
  
-
  #### Evidencia 2: mantenimiento del orden FIFO al insertar más nodos (enqueue)
+<img width="1913" height="853" alt="image" src="https://github.com/user-attachments/assets/40a311dd-8dc3-4846-b289-1e259480f4a2" />
+  #### Explicación: En la imagen se observa que el puntero rear->next apunta al nuevo nodo y posteriormente rear se va a actualiza para señalar el último nodo insertado.
+  #### Justificación: Esto demuestra que la cola mantiene el orden FIFO, ya que los nuevos elementos siempre se agregan al final sin alterar los nodos anteriores.
 
  #### Evidencia 3: comportamiento de eliminación y prevención de fugas (dequeue)
+ <img width="1901" height="855" alt="image" src="https://github.com/user-attachments/assets/6a1829cb-9915-4a89-bb9d-91141007dec3" />
+  #### Explicación: En la captura se observa que el nodo apuntado por front se guarda temporalmente en temp, luego front se actualiza para apuntar al siguiente nodo de la cola.
+  #### Justificación: En la captura se observa que el nodo apuntado por front se guarda temporalmente en temp, luego front se actualiza para apuntar al siguiente nodo de la cola.
 
  #### Evidencia 4: control del tamaño máximo de la cola (maxSize)
+ <img width="1914" height="861" alt="image" src="https://github.com/user-attachments/assets/3920099b-8623-4d90-a684-de5b96dd167d" />
+  #### Explicación: cuando el tamaño de la cola supera el límite máximo, el programa ejecuta la función dequeue() para eliminar el nodo más antiguo.
+  #### Justificación: Esto garantiza que la cola nunca supere el tamaño definido, manteniendo un número controlado de trazos en pantalla.
 
  #### Evidencia 5: recorrido de la cola sin destruirla (draw)
+ <img width="1912" height="909" alt="image" src="https://github.com/user-attachments/assets/eaf1b36a-afdd-4073-ba12-471cd4ec952d" />
+  #### Explicación: El puntero current se utiliza para recorrer los nodos de la cola desde front hasta nullptr, permitiendo dibujar cada trazo en pantalla.
+  #### Justificación: Esto demuestra que el recorrido de la cola se realiza sin modificar la estructura de datos original.
 
  #### Evidencia 6: limpieza total de la memoria (clear)
+ <img width="1919" height="856" alt="image" src="https://github.com/user-attachments/assets/64af4337-9cb5-448a-9d7d-2adb7682b772" />
+  #### Explicación: En la captura se observa que todos los nodos han sido eliminados mediante llamadas repetidas a dequeue().
+  #### Justificación: Esto confirma que la función clear() elimina correctamente todos los nodos y restablece el estado de la cola.
 
 ## Bitácora de reflexión
 
 ### Actividad 4
+
 
 
 
