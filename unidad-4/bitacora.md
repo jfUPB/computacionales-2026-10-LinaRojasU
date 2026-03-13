@@ -29,7 +29,7 @@ se agregan nodos a la serpiente, aL apretar "r" puede ir eliminando nodo por nod
 
 ### Actividad 3
 
- #### Evidencia 1: inserción del primer nodo en una cola vacía (enqueue)
+#### Evidencia 1: inserción del primer nodo en una cola vacía (enqueue)
  <img width="1902" height="883" alt="Captura de pantalla 2026-03-13 032410" src="https://github.com/user-attachments/assets/b71f9204-7c81-4889-ad0f-2f86d7276be9" />
  #### Explicación: En la captura se observa que la cola estaba vacía y se insertó el primer nodo. Las variables front y rear apuntan a la misma dirección de memoria, lo que indica que el primer nodo es simultáneamente el inicio y el final de la cola. Además despues (aunque no se ve en la captura), el tamaño (size) se incrementa a 1.
  #### Justificación: Esto demuestra que la estructura maneja correctamente la inserción inicial en una cola vacía, estableciendo adecuadamente los punteros front y rear.
@@ -62,6 +62,7 @@ se agregan nodos a la serpiente, aL apretar "r" puede ir eliminando nodo por nod
 ## Bitácora de reflexión
 
 ### Actividad 4
+
 
 
 
