@@ -29,9 +29,25 @@ se agregan nodos a la serpiente, aL apretar "r" puede ir eliminando nodo por nod
 
 ### Actividad 3
 
+ #### Explicación: ¿Qué variables y valores específicos se están observando en la imagen?
+ #### Justificación: ¿Por qué esto demuestra que la estructura o la función cumple con lo solicitado en el enunciado?
+ 
+ #### Evidencia 1: inserción del primer nodo en una cola vacía (enqueue)
+ 
+
+ #### Evidencia 2: mantenimiento del orden FIFO al insertar más nodos (enqueue)
+
+ #### Evidencia 3: comportamiento de eliminación y prevención de fugas (dequeue)
+
+ #### Evidencia 4: control del tamaño máximo de la cola (maxSize)
+
+ #### Evidencia 5: recorrido de la cola sin destruirla (draw)
+
+ #### Evidencia 6: limpieza total de la memoria (clear)
 
 ## Bitácora de reflexión
 
 ### Actividad 4
+
 
 
