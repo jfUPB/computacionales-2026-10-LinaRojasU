@@ -16,6 +16,12 @@ Observa el bucle foreach. La variable fig es de tipo Figura, pero a veces contie
 
 ### Actividad 2
 
+### Actividad 3
+
+### Actividad 4
+
+### Actividad 5 
+
 ## Bitácora de aplicación 
 
 
