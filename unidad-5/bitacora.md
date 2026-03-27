@@ -535,7 +535,8 @@ ofApp::~ofApp() {
 ```
 
 - Evidencia 1 — Herencia en memoria
-Elección del punto de inspección:
+Elección del punto de inspección: ```particles[i]->update(dt);```
+¿Por qué aquí?: Porque en ese momento ya existe un objeto real (ej: HeartParticle) dentro del vector y está siendo tratado como Particle*. Es el mejor punto para ver cómo está construido en memoria con herencia.
 
 <img width="1564" height="958" alt="image" src="https://github.com/user-attachments/assets/ae167be9-6ce3-4cc0-9875-4ec6c674c1cf" />
 
@@ -544,7 +545,8 @@ Explicación: En el depurador se observa que SpiralExplosion contiene la parte h
 Justificación: Esto muestra que la herencia se implementa dentro de una misma región de memoria, donde la clase derivada incorpora la información de sus clases base.
 
 - Evidencia 2 — La _vtable de tu nuevo tipo
-Elección del punto de inspección:
+Elección del punto de inspección:  ```particles[i]->update(dt);```
+¿Por qué aquí?: Porque en este punto el objeto ya está completamente construido y listo para ejecutar métodos virtuales. Esto permite inspeccionar su _vptr, que apunta a la _vtable, y analizar cómo el sistema decide qué función ejecutar en tiempo de ejecución.
 
 SpiralExplosion:
 <img width="1564" height="958" alt="image" src="https://github.com/user-attachments/assets/ae167be9-6ce3-4cc0-9875-4ec6c674c1cf" />
@@ -557,7 +559,8 @@ Explicación: Al comparar la vtable de SpiralExplosion con la de CircularExplosi
 Justificación: Esto muestra que el polimorfismo en C++ se apoya en la vtable: la tabla conserva el orden de los métodos virtuales, pero cada clase apunta a sus propias funciones cuando las modifica.
 
 - Evidencia 3 — Polimorfismo en tiempo de ejecución
-Elección del punto de inspección:
+Elección del punto de inspección: ```particles[i]->draw();```
+¿Por qué aquí?: Porque esta es la línea donde ocurre directamente el polimorfismo. Aunque el tipo del puntero es Particle*, aquí el programa decide en tiempo de ejecución qué método draw() ejecutar dependiendo del tipo real del objeto.
 
 <img width="1549" height="736" alt="image" src="https://github.com/user-attachments/assets/c0fa1be6-0f9a-470e-b289-ce77e5913827" />
 
@@ -566,7 +569,8 @@ Explicación: Aunque la variable es de tipo Particle*, el programa ejecuta la ve
 Justificación: Esto demuestra despacho dinámico: la llamada se resuelve en tiempo de ejecución usando el tipo real del objeto y no solo el tipo del puntero.
 
 - Evidencia 4 — Encapsulamiento en el contexto de herencia
-Elección del punto de inspección:
+Elección del punto de inspección: ```void update(float dt)```
+¿Por qué aquí?: Porque dentro de este método se tiene acceso directo a los atributos privados del objeto mediante this. Es el lugar ideal para ver qué datos están disponibles dentro de la clase y entender cómo el encapsulamiento limita el acceso desde fuera.
 
 <img width="1536" height="746" alt="image" src="https://github.com/user-attachments/assets/e04ed584-5012-4aa9-a333-4f33450b23f6" />
 
@@ -574,37 +578,47 @@ Explicación: En la jerarquía de herencia, los campos protected de la clase bas
 
 Justificación: Esto demuestra que el encapsulamiento sigue siendo una regla de acceso del lenguaje, incluso dentro de una jerarquía de herencia.
 
-- Evidencias para RAE 2 — Pruebas y depuración
-Elección del punto de inspección:
-
-
-
-Explicación: 
-Justificación: 
-
-
+Evidencias para RAE 2 — Pruebas y depuración
 - Evidencia 5 — Ciclo de vida completo de tu partícula
-Elección del punto de inspección:
+Elección del punto de inspección: ```particles.push_back(new RisingParticle(...));  particles[i]->update(dt);  delete particles[i];```
+¿Por que aqui?: Porque aquí se crea el objeto y entra al sistema, Porque aquí el objeto está en uso y cambiando su estado, Porque aquí se libera la memoria del objeto.
 
+Creación:
+<img width="1557" height="826" alt="image" src="https://github.com/user-attachments/assets/0a0f99a5-996d-4c96-a3f0-744094c4ffa3" />
 
+Vida:
+<img width="1558" height="810" alt="image" src="https://github.com/user-attachments/assets/0df81314-9c4c-4268-83a1-614b23e79383" />
 
-Explicación: 
-Justificación: 
+Muerte:
+<img width="1564" height="789" alt="image" src="https://github.com/user-attachments/assets/87e2a70b-6a7b-410d-820c-423d18ca82c2" />
+
+Explicación: La partícula se crea y entra al vector como un puntero dinámico, luego se actualiza mientras vive y finalmente se elimina cuando isDead() indica que terminó su tiempo de vida. El depurador permite ver claramente cada etapa del ciclo.
+
+Justificación: Esto demuestra el ciclo completo de vida del objeto: creación, uso y destrucción.
 
 - Evidencia 6 — Sin fugas de memoria
-Elección del punto de inspección:
+Elección del punto de inspección: ```delete particles[i];
+particles.erase(particles.begin() + i);```
+¿Por que aqui?: Porque estas dos líneas son críticas: una libera la memoria (delete) y la otra elimina el puntero del contenedor (erase). Es el punto clave donde se evita una fuga de memoria
 
+Antes: 
+<img width="1546" height="726" alt="image" src="https://github.com/user-attachments/assets/24fb5ce5-31f3-4b8a-a345-82d90379f190" />
 
+Despues: 
+<img width="1552" height="709" alt="image" src="https://github.com/user-attachments/assets/da2c896a-4c6e-4fd1-9f3f-dea6207b2533" />
 
-Explicación: 
-Justificación: 
+Explicación: La memoria se libera con delete y la referencia se retira del vector con erase. Después de esa operación, el objeto ya no aparece en la colección, lo que evita fugas de memoria y accesos a memoria liberada.
+
+Justificación: Esto demuestra que el objeto no queda “vivo” en memoria después de morir y que el vector no conserva referencias inválidas.
 
 - Evidencia 7 — Prueba de condición límite
-Elección del punto de inspección:
+Elección del punto de inspección: ```particles.push_back(...)```
+¿Por que aqui?: Porque este punto permite observar qué ocurre cuando se agregan muchas partículas rápidamente. Es ideal para evaluar el comportamiento del sistema bajo carga extrema.
 
+<img width="1554" height="753" alt="image" src="https://github.com/user-attachments/assets/3e50b541-1072-46c3-a3a1-415f91c96cfa" />
 
+Explicación: La prueba se diseñó para verificar que la aplicación funciona correctamente cuando no hay partículas activas. Al detenerse la ejecución al inicio de update(), se observa que particles.size() es 0, por lo que los bucles se omiten sin producir errores.
 
-Explicación: 
-Justificación: 
+Justificación: Esto confirma que la implementación maneja correctamente el caso límite de un vector vacío y no intenta acceder a elementos inexistentes.
 
 ## Bitácora de reflexión
