@@ -99,7 +99,8 @@ ofApp:
 
 </details>
 
-## Bitácora de aplicación 
+<details>
+<summary>Bitácora de aplicación</summary>
 ### Fase 1
 
 ofApp.h
@@ -401,5 +402,7 @@ Breakponit: Crear ```SpiralState``` desde cero (no heredar de otro estado)
 
 Explicación: Comportamiento independiente (usa trigonometría)
 Justificación: Evita acoplamiento innecesario y facilita extensión futura
+
+</details>
 
 ## Bitácora de reflexión
