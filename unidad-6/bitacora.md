@@ -1,6 +1,7 @@
 # Unidad 6
 
-## Bitácora de proceso de aprendizaje
+<details>
+<summary>## Bitácora de proceso de aprendizaje</summary>
 ### Actividad 1
 ¿Qué observas en la aplicación al presionar las teclas a, r, s, n?
 > a: las particulas se acercan al rededor de donde este posicionado el mouse.
@@ -94,6 +95,8 @@ ofApp:
    > Patrón State: el patrón State define cómo cambia el comportamiento de cada partícula en función de su estado interno. Cuando una partícula recibe un evento en onNotify, no cambia su lógica mediante condicionales, sino que invoca setState para asignar un nuevo objeto de estado. Este nuevo estado redefine el comportamiento de la partícula, especialmente en el método update, que se ejecuta mediante polimorfismo (vtable). De esta forma, el mismo llamado (state->update) puede producir comportamientos distintos según el estado activo (Normal, Attract, Repel, Stop). Esto permite que el sistema sea extensible y evita estructuras complejas de condicionales, mejorando la mantenibilidad del código.
    
    > Patrón Factory: el patrón Factory interviene en la fase inicial del sistema, específicamente en el método setup de ofApp, donde se crean las partículas. En lugar de instanciar objetos directamente, se utiliza ParticleFactory::createParticle, que encapsula la lógica de creación y configuración de cada tipo de partícula (star, shooting_star, planet). Esto permite centralizar la creación de objetos y facilita la extensión del sistema, ya que nuevos tipos de partículas pueden agregarse sin modificar el código principal. Una vez creadas, las partículas son registradas como observadores, y la Factory ya no interviene en el flujo de ejecución, habiendo cumplido su rol en la arquitectura.
+
+</details>
 
 ## Bitácora de aplicación 
 ### Fase 1
