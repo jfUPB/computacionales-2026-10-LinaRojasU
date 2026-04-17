@@ -101,7 +101,8 @@ ofApp:
 
 <details>
 <summary>Bitácora de aplicación</summary>
-### Fase 1
+
+   ### Fase 1
 
 ofApp.h
 ```
