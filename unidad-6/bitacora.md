@@ -1,7 +1,9 @@
 # Unidad 6
 
 <details>
-<summary> ## Bitácora de proceso de aprendizaje</summary>
+<summary>
+   ##Bitácora de proceso de aprendizaje
+</summary>
    
 ### Actividad 1
 ¿Qué observas en la aplicación al presionar las teclas a, r, s, n?
