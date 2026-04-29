@@ -182,7 +182,7 @@ int main() {
 ### Evidencia 1 — Contexto y carga de OpenGL
 Breackpoint: ```gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);```
 
-
+<img width="1500" height="390" alt="image" src="https://github.com/user-attachments/assets/e958e321-3dc4-49af-80d2-ce8ac6ac3fe0" />
 
 Explicación: Significa que GLFW ya creó correctamente la ventana y el contexto.
 
@@ -191,7 +191,7 @@ Justificación: Coloco el breakpoint en gladLoadGLLoader porque es el punto dond
 ### Evidencia 2 — Del arreglo al shader
 Breackpoint: ```glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);```
 
-
+<img width="1456" height="606" alt="image" src="https://github.com/user-attachments/assets/99ff530f-bbae-469b-bf5d-9a76e52b724c" />
 
 Explicación: Que los datos están en CPU listos para enviarse a la GPU.
 
@@ -200,7 +200,7 @@ Justificación: Ubico el breakpoint en glBufferData porque es el momento exacto 
 ### Evidencia 3 — Uniform y cambio visual
 Breackpoint: ```glUniform2f(offsetLoc, offsetX, offsetY);```
 
-
+<img width="1565" height="590" alt="image" src="https://github.com/user-attachments/assets/0de2a64e-e05e-49e5-b8b9-d73826c628f2" />
 
 Explicación: Que el valor cambia en cada frame (dinámico).
 
@@ -209,7 +209,7 @@ Justificación: Coloco el breakpoint en glUniform porque quiero demostrar que el
 ### Evidencia 4 — Prueba de borde
 Breackpoint: ```glUniform2f(offsetLoc, 5.0f, 5.0f);```
 
-
+<img width="1461" height="705" alt="image" src="https://github.com/user-attachments/assets/7e10c311-722e-40f2-be07-92e82d12e355" />
 
 Explicación: Se salió del rango NDC [-1,1]
 
@@ -218,7 +218,7 @@ Justificación: El breakpoint se coloca en el envío del uniform extremo para ve
 ### Evidencia 5 — Responsabilidad del pipeline
 Breackpoint: ```glDrawArrays(GL_TRIANGLES, 0, 3);```
 
-
+<img width="1442" height="431" alt="image" src="https://github.com/user-attachments/assets/4c45e2e2-1b6c-4f52-ba7e-c8d321514377" />
 
 Explicación: Que el pipeline está listo: shader activo, datos cargados, VAO activo.
 
